@@ -2,11 +2,14 @@
 
 import Link from "next/link";
 import * as React from "react";
+import { useRouter } from "next/navigation";
 import { IconEye, IconEyeOff } from "@tabler/icons-react";
 import { useAuth } from "@/hooks/use-auth";
 import { loginSchema } from "@/lib/validations";
 import type { LoginFormData } from "@/types";
 import { AuthLayout } from "@/components/auth/auth-layout";
+import { createBrowserClient } from "@/lib/supabase";
+import { getErrorMessage } from "@/lib/errors";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -15,14 +18,54 @@ import { Label } from "@/components/ui/label";
 
 export default function LoginPage() {
   const { isSubmitting, error, signIn, clearError } = useAuth();
+  const router = useRouter();
+  const supabase = createBrowserClient();
   const [showPassword, setShowPassword] = React.useState(false);
   const [validationErrors, setValidationErrors] = React.useState<
     Partial<Record<keyof LoginFormData, string>>
   >({});
+  const [isVerifyingEmail, setIsVerifyingEmail] = React.useState(false);
 
   React.useEffect(() => {
     clearError();
-  }, [clearError]);
+    
+    // Handle email confirmation callback
+    const handleEmailConfirmation = async () => {
+      const hashParams = new URLSearchParams(window.location.hash.substring(1));
+      const accessToken = hashParams.get("access_token");
+      const refreshToken = hashParams.get("refresh_token");
+      const type = hashParams.get("type");
+
+      // Only handle email confirmation (type === "signup")
+      if (type === "signup" && accessToken && refreshToken) {
+        setIsVerifyingEmail(true);
+        
+        try {
+          const { error: sessionError } = await supabase.auth.setSession({
+            access_token: accessToken,
+            refresh_token: refreshToken,
+          });
+
+          if (sessionError) {
+            // Error will be shown via the error state
+            return;
+          }
+
+          // Clear the hash from URL
+          window.history.replaceState(null, "", window.location.pathname);
+          
+          // Redirect to dashboard
+          router.push("/dashboard");
+        } catch (err) {
+          // Error will be handled by error state
+        } finally {
+          setIsVerifyingEmail(false);
+        }
+      }
+    };
+
+    handleEmailConfirmation();
+  }, [clearError, router, supabase]);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -52,8 +95,8 @@ export default function LoginPage() {
 
   return (
     <AuthLayout
-      isLoading={isSubmitting}
-      loadingMessage="Signing you in..."
+      isLoading={isSubmitting || isVerifyingEmail}
+      loadingMessage={isVerifyingEmail ? "Verifying your email..." : "Signing you in..."}
       leftContent={{
         badge: "New · Subscription Analytics Platform",
         title: "Welcome back,\ntrack your growth.",
