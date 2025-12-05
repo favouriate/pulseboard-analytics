@@ -81,6 +81,9 @@ export function useAuth(): UseAuthReturn {
           await supabase.auth.signUp({
             email: data.email,
             password: data.password,
+            options: {
+              emailRedirectTo: `${getAppUrl()}/auth/login`,
+            },
           });
 
         if (signUpError) {
