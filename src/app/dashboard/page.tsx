@@ -7,10 +7,22 @@ import {
   SidebarInset,
   SidebarProvider,
 } from "@/components/ui/sidebar"
+import { getServerUser } from "@/lib/supabase-server"
+import { redirect } from "next/navigation"
 
 import data from "./data.json"
 
-export default function Page() {
+/**
+ * Dashboard page - protected route
+ * Requires authentication (handled by middleware)
+ */
+export default async function Page() {
+  const user = await getServerUser();
+  
+  if (!user) {
+    redirect("/auth/login?redirect=/dashboard");
+  }
+
   return (
     <SidebarProvider
       style={
