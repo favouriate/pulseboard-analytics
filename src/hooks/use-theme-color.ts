@@ -1,16 +1,7 @@
 "use client"
 
 import * as React from "react"
-
-export type ThemeColor =
-  | "default"
-  | "blue"
-  | "green"
-  | "orange"
-  | "red"
-  | "rose"
-  | "violet"
-  | "yellow"
+import type { ThemeColor } from "@/types"
 
 const STORAGE_KEY = "theme-color"
 

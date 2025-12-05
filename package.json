@@ -2,7 +2,7 @@
   "name": "pulseboard-analytics",
   "version": "0.1.0",
   "private": true,
-  "description": "SaaS subscription analytics dashboard built with Next.js, TypeScript, Tailwind CSS, shadcn/ui, TanStack Table, and Firebase.",
+  "description": "SaaS subscription analytics dashboard built with Next.js, TypeScript, Tailwind CSS, shadcn/ui, TanStack Table, and Supabase.",
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
@@ -26,6 +26,8 @@
     "@radix-ui/react-toggle": "^1.1.10",
     "@radix-ui/react-toggle-group": "^1.1.11",
     "@radix-ui/react-tooltip": "^1.2.8",
+    "@supabase/ssr": "^0.8.0",
+    "@supabase/supabase-js": "^2.86.2",
     "@tabler/icons-react": "^3.35.0",
     "@tanstack/react-table": "^8.21.3",
     "class-variance-authority": "^0.7.1",
