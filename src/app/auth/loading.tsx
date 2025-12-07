@@ -1,5 +1,5 @@
-import { Skeleton } from "@/components/ui/skeleton";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Skeleton } from "@/components/atoms/ui/skeleton";
+import { Card, CardContent, CardHeader } from "@/components/atoms/ui/card";
 
 /**
  * Loading state for auth routes

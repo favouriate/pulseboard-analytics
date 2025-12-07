@@ -6,12 +6,12 @@ import { IconEye, IconEyeOff } from "@tabler/icons-react";
 import { useAuth } from "@/hooks/use-auth";
 import { registerSchema } from "@/lib/validations";
 import type { RegisterFormData } from "@/types";
-import { AuthLayout } from "@/components/auth/auth-layout";
+import { AuthLayout } from "@/components/organisms/layout/auth-layout";
 
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Button } from "@/components/atoms/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/atoms/ui/card";
+import { Input } from "@/components/atoms/ui/input";
+import { Label } from "@/components/atoms/ui/label";
 
 export default function RegisterPage() {
   const { isSubmitting, error, signUp, clearError } = useAuth();

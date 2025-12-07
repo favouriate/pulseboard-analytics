@@ -9,7 +9,16 @@ export async function middleware(request: NextRequest) {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
+  // Validate environment variables
   if (!supabaseUrl || !supabaseAnonKey) {
+    // In production, log error but don't expose details
+    if (process.env.NODE_ENV === "development") {
+      console.error(
+        "Missing Supabase environment variables. " +
+        "Please check your .env.local file."
+      );
+    }
+    // Allow request to proceed but authentication will fail gracefully
     return NextResponse.next();
   }
 

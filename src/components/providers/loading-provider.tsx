@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useState, useCallback } from "react";
-import { LoadingOverlay } from "@/components/loading/loading-overlay";
+import { LoadingOverlay } from "@/components/molecules/feedback/loading-overlay";
 
 interface LoadingContextType {
   isLoading: boolean;

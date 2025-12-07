@@ -1,10 +1,10 @@
-import { DashboardSkeleton } from "@/components/loading/dashboard-skeleton";
+import { DashboardSkeleton } from "@/components/organisms/feedback/dashboard-skeleton";
 import {
   SidebarInset,
   SidebarProvider,
-} from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/app-sidebar";
-import { SiteHeader } from "@/components/site-header";
+} from "@/components/atoms/ui/sidebar";
+import { AppSidebar } from "@/components/organisms/layout/app-sidebar";
+import { SiteHeader } from "@/components/organisms/layout/site-header";
 
 /**
  * Loading state for dashboard route

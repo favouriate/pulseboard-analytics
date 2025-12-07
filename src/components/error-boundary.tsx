@@ -1,8 +1,8 @@
 "use client";
 
 import React from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/atoms/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/atoms/ui/card";
 
 interface ErrorBoundaryState {
   hasError: boolean;

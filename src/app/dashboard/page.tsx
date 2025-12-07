@@ -1,16 +1,26 @@
-import { AppSidebar } from "@/components/app-sidebar"
-import { ChartAreaInteractive } from "@/components/chart-area-interactive"
-import { DataTable } from "@/components/data-table"
-import { SectionCards } from "@/components/section-cards"
-import { SiteHeader } from "@/components/site-header"
+import type { Metadata } from "next";
+import { AppSidebar } from "@/components/organisms/layout/app-sidebar"
+import { ChartAreaInteractive } from "@/components/organisms/data-display/chart-area-interactive"
+import { DataTable } from "@/components/organisms/data-display/data-table"
+import { SectionCards } from "@/components/organisms/data-display/section-cards"
+import { SiteHeader } from "@/components/organisms/layout/site-header"
 import {
   SidebarInset,
   SidebarProvider,
-} from "@/components/ui/sidebar"
+} from "@/components/atoms/ui/sidebar"
 import { getServerUser } from "@/lib/supabase-server"
 import { redirect } from "next/navigation"
 
 import data from "./data.json"
+
+export const metadata: Metadata = {
+  title: "Dashboard | Pulseboard Analytics",
+  description: "View your SaaS subscription analytics, track MRR, analyze churn patterns, and monitor customer health metrics.",
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 
 /**
  * Dashboard page - protected route

@@ -76,6 +76,8 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## Project Structure
 
+This project follows **Atomic Design** principles for component organization:
+
 ```
 .
 ├── src/
@@ -87,11 +89,23 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 │   │   ├── dashboard/          # Main dashboard (protected)
 │   │   ├── layout.tsx          # Root layout with providers
 │   │   └── page.tsx            # Landing page
-│   ├── components/              # Reusable UI components
-│   │   ├── auth/               # Auth-specific components
-│   │   ├── loading/            # Loading skeletons and overlays
-│   │   ├── providers/          # Context providers
-│   │   └── ui/                 # shadcn/ui components
+│   ├── components/              # Reusable UI components (Atomic Design)
+│   │   ├── atoms/              # Basic building blocks
+│   │   │   ├── ui/             # shadcn/ui components (Button, Input, Card, etc.)
+│   │   │   └── feedback/       # Basic feedback elements (Spinner, Skeleton)
+│   │   ├── molecules/          # Simple component combinations
+│   │   │   ├── forms/          # Form field molecules
+│   │   │   ├── navigation/    # Navigation molecules
+│   │   │   ├── data-display/   # Data display molecules
+│   │   │   └── feedback/       # Feedback molecules (LoadingOverlay)
+│   │   ├── organisms/          # Complex UI components
+│   │   │   ├── layout/         # Layout organisms (SiteHeader, AppSidebar, AuthLayout)
+│   │   │   ├── navigation/     # Navigation organisms (NavMain, NavUser, etc.)
+│   │   │   ├── forms/          # Complex forms (LoginForm, ResetPasswordForm)
+│   │   │   ├── data-display/   # Complex data components (DataTable, Charts, SectionCards)
+│   │   │   └── feedback/       # Complex feedback (DashboardSkeleton)
+│   │   ├── templates/          # Page-level layouts (future)
+│   │   └── providers/          # Context providers (Theme, Query, Loading)
 │   ├── lib/                    # Utilities and configurations
 │   │   ├── supabase.ts         # Supabase browser client
 │   │   ├── supabase-server.ts  # Supabase server client
