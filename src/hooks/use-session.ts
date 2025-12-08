@@ -47,7 +47,7 @@ export function useSession(): UseSessionReturn {
     };
   }, [supabase]);
 
-  const signOut = async () => {
+  const signOut = async (): Promise<void> => {
     setLoading(true);
     const { error: signOutError } = await supabase.auth.signOut();
     if (signOutError) {
