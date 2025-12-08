@@ -2,13 +2,14 @@ import { z } from "zod";
 
 /**
  * Email validation schema
+ * Trims whitespace and converts to lowercase before validation
  */
 export const emailSchema = z
   .string()
   .min(1, "Email is required")
-  .email("Invalid email address")
+  .trim()
   .toLowerCase()
-  .trim();
+  .email("Invalid email address");
 
 /**
  * Password validation schema
