@@ -2,9 +2,13 @@
 
 import * as React from "react";
 import Link from "next/link";
+import { Button } from "@/components/atoms/ui/button";
 
-import { Button } from "@/components/ui/button";
-
+/**
+ * Landing page component
+ * Provides entry point to the application with sign in and sign up CTAs
+ * Note: Metadata is handled in the root layout.tsx
+ */
 export default function Home() {
   return (
     <div className="min-h-screen bg-[var(--color-brand-900)] text-foreground">

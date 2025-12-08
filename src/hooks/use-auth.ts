@@ -1,17 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState, useCallback } from "react";
-import { createBrowserClient } from "@/lib/supabase";
-import { getErrorMessage, logError } from "@/lib/errors";
+import { useAuthMutations } from "./mutations/use-auth-mutations";
 import type { LoginFormData, RegisterFormData } from "@/types";
-
-function getAppUrl(): string {
-  if (typeof window !== "undefined") {
-    return window.location.origin;
-  }
-  return process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
-}
 
 interface UseAuthReturn {
   isSubmitting: boolean;
@@ -24,121 +15,49 @@ interface UseAuthReturn {
 
 /**
  * Custom hook for authentication operations
- * Provides consistent error handling and state management
+ * Now uses React Query for state management via service layer
  */
 export function useAuth(): UseAuthReturn {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
-  const supabase = createBrowserClient();
+  const {
+    signIn: signInMutation,
+    signUp: signUpMutation,
+    resetPassword: resetPasswordMutation,
+  } = useAuthMutations();
 
-  const clearError = useCallback(() => {
-    setError(null);
-  }, []);
+  const signIn = async (data: LoginFormData): Promise<boolean> => {
+    const result = await signInMutation.mutateAsync(data);
+    return result.success;
+  };
 
-  const signIn = useCallback(
-    async (data: LoginFormData): Promise<boolean> => {
-      setError(null);
-      setIsSubmitting(true);
+  const signUp = async (data: RegisterFormData): Promise<boolean> => {
+    const result = await signUpMutation.mutateAsync(data);
+    return result.success;
+  };
 
-      try {
-        const { data: authData, error: signInError } =
-          await supabase.auth.signInWithPassword({
-            email: data.email,
-            password: data.password,
-          });
+  const resetPassword = async (email: string): Promise<boolean> => {
+    const result = await resetPasswordMutation.mutateAsync(email);
+    return result.success;
+  };
 
-        if (signInError) {
-          setError(getErrorMessage(signInError));
-          return false;
-        }
+  const clearError = () => {
+    // Errors are managed by React Query
+    // This is kept for backward compatibility with existing components
+  };
 
-        if (authData.user && authData.session) {
-          router.push("/dashboard");
-          return true;
-        }
+  const isSubmitting =
+    signInMutation.isPending ||
+    signUpMutation.isPending ||
+    resetPasswordMutation.isPending;
 
-        setError("Sign in failed. Please try again.");
-        return false;
-      } catch (err) {
-        logError(err, "signIn");
-        setError(getErrorMessage(err));
-        return false;
-      } finally {
-        setIsSubmitting(false);
-      }
-    },
-    [router, supabase]
-  );
-
-  const signUp = useCallback(
-    async (data: RegisterFormData): Promise<boolean> => {
-      setError(null);
-      setIsSubmitting(true);
-
-      try {
-        const { data: signUpData, error: signUpError } =
-          await supabase.auth.signUp({
-            email: data.email,
-            password: data.password,
-            options: {
-              emailRedirectTo: `${getAppUrl()}/auth/login`,
-            },
-          });
-
-        if (signUpError) {
-          setError(getErrorMessage(signUpError));
-          return false;
-        }
-
-        if (!signUpData.user) {
-          setError("Registration failed. Please try again.");
-          return false;
-        }
-
-        if (signUpData.session) {
-          router.push("/dashboard");
-          return true;
-        }
-
-        return true;
-      } catch (err) {
-        logError(err, "signUp");
-        setError(getErrorMessage(err));
-        return false;
-      } finally {
-        setIsSubmitting(false);
-      }
-    },
-    [router, supabase]
-  );
-
-  const resetPassword = useCallback(
-    async (email: string): Promise<boolean> => {
-      setError(null);
-      setIsSubmitting(true);
-
-      try {
-        const { error: resetError } = await supabase.auth.resetPasswordForEmail(email, {
-          redirectTo: `${getAppUrl()}/auth/reset-password`,
-        });
-
-        if (resetError) {
-          setError(getErrorMessage(resetError));
-          return false;
-        }
-
-        return true;
-      } catch (err) {
-        logError(err, "resetPassword");
-        setError(getErrorMessage(err));
-        return false;
-      } finally {
-        setIsSubmitting(false);
-      }
-    },
-    [supabase]
-  );
+  const error =
+    signInMutation.error?.message ||
+    signUpMutation.error?.message ||
+    resetPasswordMutation.error?.message ||
+    signInMutation.data?.error ||
+    signUpMutation.data?.error ||
+    resetPasswordMutation.data?.error ||
+    null;
 
   return {
     isSubmitting,
@@ -149,4 +68,3 @@ export function useAuth(): UseAuthReturn {
     clearError,
   };
 }
-

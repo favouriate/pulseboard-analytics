@@ -1,4 +1,19 @@
-# Design System Tokens
+# Design System
+
+## Component Architecture
+
+This project follows **Atomic Design** principles. Components are organized into:
+
+- **Atoms** (`src/components/atoms/`): Basic building blocks
+- **Molecules** (`src/components/molecules/`): Simple combinations
+- **Organisms** (`src/components/organisms/`): Complex components
+- **Templates** (`src/components/templates/`): Page layouts (future)
+
+See the main [README.md](../../README.md) for more details on the component structure.
+
+---
+
+# Design Tokens Tokens
 
 This document describes the three-layer token architecture used in Pulseboard Analytics, following best practices for scalable design systems.
 
