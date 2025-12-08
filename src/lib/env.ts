@@ -10,8 +10,15 @@ const requiredEnvVars = {
 
 /**
  * Validates that all required environment variables are present
+ * Skips validation during build time to allow static page generation
  */
 export function validateEnv(): void {
+  // Skip validation during build time - only validate at runtime
+  // This allows Next.js to statically generate pages without env vars
+  if (process.env.NEXT_PHASE === 'phase-production-build') {
+    return;
+  }
+
   const missing: string[] = [];
 
   for (const [key, value] of Object.entries(requiredEnvVars)) {

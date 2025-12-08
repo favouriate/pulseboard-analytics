@@ -12,5 +12,5 @@ export function createBrowserClient() {
   return createSupabaseBrowserClient(supabaseUrl, supabaseAnonKey);
 }
 
-// Legacy export for backward compatibility (deprecated, use createBrowserClient)
-export const supabase = createBrowserClient();
+// Legacy export removed - all code now uses createBrowserClient() directly
+// This prevents module-level execution during build time
