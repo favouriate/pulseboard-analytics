@@ -25,3 +25,4 @@ export function useSession(): UseSessionReturn {
     signOut,
   };
 }
+
