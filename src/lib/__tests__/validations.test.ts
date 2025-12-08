@@ -14,10 +14,9 @@ describe('Validation Schemas', () => {
 
     it('should lowercase and trim email', () => {
       const result = emailSchema.safeParse('  TEST@EXAMPLE.COM  ')
+      expect(result.success).toBe(true)
       if (result.success) {
         expect(result.data).toBe('test@example.com')
-      } else {
-        fail('Expected email to be valid')
       }
     })
 

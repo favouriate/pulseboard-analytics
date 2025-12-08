@@ -41,14 +41,7 @@ cd dashboard
 npm install
 ```
 
-### 2. Set Up Supabase
-
-1. Create a free account at [supabase.com](https://supabase.com)
-2. Create a new project
-3. Go to **Settings** → **API** in your Supabase dashboard
-4. Copy your **Project URL** and **anon/public key**
-
-### 3. Configure Environment Variables
+### 2. Configure Environment Variables
 
 Create a `.env.local` file in the root directory:
 
@@ -59,13 +52,13 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
 
 **Note:** Never commit `.env.local` to version control. It's already included in `.gitignore`.
 
-### 4. Run the Development Server
+### 3. Run the Development Server
 
 ```bash
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+Open [http://localhost:3000]in your browser.
 
 ### 5. Create Your First User
 
@@ -149,30 +142,6 @@ See `src/styles/README.md` for detailed documentation.
 - **Surface**: `#FAF3E1` (Cream)
 - **Text on Dark**: `#FFF8DE` (Warm off-white)
 
-## Supabase Setup
-
-### Database Schema
-
-Supabase automatically creates the `auth.users` table. For custom tables, use the Supabase SQL Editor:
-
-```sql
--- Example: Create a customers table
-CREATE TABLE customers (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id UUID REFERENCES auth.users(id),
-  name TEXT NOT NULL,
-  email TEXT NOT NULL,
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-);
-
--- Enable Row Level Security
-ALTER TABLE customers ENABLE ROW LEVEL SECURITY;
-
--- Create policy for users to see only their own customers
-CREATE POLICY "Users can view own customers"
-  ON customers FOR SELECT
-  USING (auth.uid() = user_id);
-```
 
 ### Authentication
 
@@ -200,16 +169,7 @@ Supabase Auth handles:
 
 Supabase provides real-time subscriptions out of the box:
 
-```typescript
-const { data, error } = await supabase
-  .channel('customers')
-  .on('postgres_changes', 
-    { event: 'INSERT', schema: 'public', table: 'customers' },
-    (payload) => console.log('New customer!', payload.new)
-  )
-  .subscribe();
-```
-
+`
 ## Scripts
 
 - `npm run dev` - Start development server with Turbopack
@@ -251,29 +211,6 @@ const { data, error } = await supabase
    - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
 4. Deploy!
 
-### Other Platforms
-
-The project can be deployed to any platform that supports Next.js:
-- **Netlify**: Use Next.js build settings
-- **Railway**: Automatic Next.js detection
-- **AWS Amplify**: Configure build settings for Next.js
-- **Docker**: Use Next.js official Docker image
-
-**Important:** Always set environment variables in your deployment platform's settings.
-
-## Troubleshooting
-
-### Authentication Issues
-
-**Problem:** Users can't sign in after registration
-- **Solution:** Check if email confirmation is enabled in Supabase. If enabled, users must confirm their email before signing in.
-
-**Problem:** Middleware redirects authenticated users
-- **Solution:** Verify environment variables are set correctly. Check browser console for errors.
-
-**Problem:** Session expires immediately
-- **Solution:** Ensure cookies are being set correctly. Check browser DevTools → Application → Cookies.
-
 ### Build Issues
 
 **Problem:** `Missing required environment variables` error
@@ -307,29 +244,3 @@ The project can be deployed to any platform that supports Next.js:
 - **Image Optimization**: Use Next.js `Image` component for optimized images
 - **Lazy Loading**: Components loaded on demand
 - **Caching**: Supabase client instances are optimized for SSR
-
-## Roadmap
-
-- [x] Supabase authentication (email/password)
-- [x] Route protection with middleware
-- [x] Password reset functionality
-- [ ] Customer and subscription data models
-- [ ] Real-time dashboard metrics
-- [ ] Advanced analytics and reporting
-- [ ] Team and workspace settings
-- [ ] Export functionality (CSV, PDF)
-- [ ] Email notifications
-- [ ] Two-factor authentication
-
-## Contributing
-
-This is a portfolio project demonstrating professional full-stack development practices. Feel free to:
-
-- Fork the repository
-- Submit issues and feature requests
-- Create pull requests for improvements
-- Use as a template for your own projects
-
-## License
-
-MIT
